@@ -23,8 +23,9 @@ update_dns() {
 
   ## --------------- CLOUDFLARE API CALL ------------------ ##
   if [ "$public_ip" != "$dns_ip" ]; then # If public IP and DNS IP are different
-    # Update DNS using dynamic DNS service
+    # Define the JSON to patch
     cf_data="{\"content\": \"$public_ip\",  \"proxied\": $proxied,  \"type\": \"A\",  \"comment\": \"$TIME\",  \"id\": \"$id\",  \"ttl\": 1}"
+    # Send the PATCH request using curl
     curl --request PATCH \
       --url https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records/$id \
       --header "Content-Type: application/json" \
